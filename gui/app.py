@@ -1,4 +1,3 @@
-
 # gui/app.py
 
 import tkinter as tk
@@ -24,10 +23,25 @@ def run_app():
     income_entry = tk.Entry(input_frame, width=20)
     income_entry.grid(row=0, column=1, padx=10, pady=4)
 
-    tk.Label(input_frame, text="Kommunalskatt (%):").grid(row=1, column=0, sticky="w")
-    municipal_entry = tk.Entry(input_frame, width=20)
-    municipal_entry.insert(0, "32")  # Default value
-    municipal_entry.grid(row=1, column=1, padx=10, pady=4)
+    tk.Label(input_frame, text="Kommunalskatt Stockholm (30,55 %):").grid(row=1, column=0, sticky="w")
+
+    municipal_frame = tk.Frame(input_frame)
+    municipal_frame.grid(row=1, column=1, sticky="w", padx=10, pady=4)
+
+    municipal_entry = tk.Entry(municipal_frame, width=10, state="disabled")
+    municipal_entry.insert(0, "30.55")
+    municipal_entry.pack(side="left")
+
+    def toggle_municipal():
+        if custom_municipal_var.get():
+            municipal_entry.config(state="normal")
+        else:
+            municipal_entry.config(state="disabled")
+            municipal_entry.delete(0, tk.END)
+            municipal_entry.insert(0, "30.55")
+
+    custom_municipal_var = tk.BooleanVar(value=False)
+    tk.Checkbutton(municipal_frame, text="Ändra", variable=custom_municipal_var, command=toggle_municipal).pack(side="left", padx=5)
 
     tk.Label(input_frame, text="Anställningsform:").grid(row=2, column=0, sticky="w")
     employment_var = tk.BooleanVar(value=False)
@@ -74,8 +88,11 @@ def run_app():
 
     def on_reset():
         income_entry.delete(0, tk.END)
+        municipal_entry.config(state="normal")
         municipal_entry.delete(0, tk.END)
-        municipal_entry.insert(0, "32")
+        municipal_entry.insert(0, "30.55")
+        municipal_entry.config(state="disabled")
+        custom_municipal_var.set(False)
         employment_var.set(False)
         for var in result_vars.values():
             var.set("-")
