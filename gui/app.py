@@ -28,8 +28,9 @@ def run_app():
     municipal_frame = tk.Frame(input_frame)
     municipal_frame.grid(row=1, column=1, sticky="w", padx=10, pady=4)
 
-    municipal_entry = tk.Entry(municipal_frame, width=10, state="disabled")
+    municipal_entry = tk.Entry(municipal_frame, width=10)
     municipal_entry.insert(0, "30.55")
+    municipal_entry.config(state="disabled")
     municipal_entry.pack(side="left")
 
     def toggle_municipal():
